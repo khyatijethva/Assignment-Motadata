@@ -15,8 +15,9 @@ button {
   cursor: pointer;
 }
 button:hover {
-  background: transparent;
+  background: var(--vt-c-black);
   color: var(--vt-c-white-mute);
+  border-color: var(--vt-c-black);
 }
 
 ul {
