@@ -6,6 +6,9 @@
   padding: 0 15px;
   font-weight: normal;
 }
+input[type='checkbox'] {
+  accent-color: brown;
+}
 button {
   background: var(--vt-c-white-mute);
   padding: 4px 15px;
@@ -92,17 +95,15 @@ ul.autosearch-list li {
 }
 .available-recipients ul li {
   padding-bottom: 0.75rem;
+}
+.available-recipients ul li label,
+.selected-group ul li label {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+  cursor: pointer;
 }
 .selected-group ul li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
   padding-bottom: 5px;
 }
