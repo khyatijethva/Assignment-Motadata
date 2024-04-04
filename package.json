@@ -8,9 +8,15 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "test:unit": "vitest --environment jsdom --root src/"
   },
   "dependencies": {
+    "@types/jsdom": "^21.1.6",
+    "@vue/test-utils": "^2.4.5",
+    "jsdom": "^24.0.0",
+    "start-server-and-test": "^2.0.3",
+    "vitest": "^1.4.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
