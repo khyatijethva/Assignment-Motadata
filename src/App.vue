@@ -13,7 +13,7 @@ import json from './json/data.json'
         <div class="subhead">
           <h3>Available Recipients</h3>
         </div>
-        <!-- search receipients code start here -->
+        <!-- Search the Receipient from available receipient code -->
         <div class="auto-search-complete">
           <input
             type="text"
@@ -28,37 +28,53 @@ import json from './json/data.json'
             </li>
           </ul>
         </div>
-        <!-- search receipients code end here -->
+        <!-- Search the Receipient from available receipient code end -->
 
-        <!-- list of available receipient -->
+        <!-- List of available recipient code -->
         <ul>
-          <li v-for="(recipient, index) in available" :key="index">
-            {{ recipient.email }}
-            <button @click="selectAvailable(recipient)">Select</button>
+          <li class="form-check" v-for="selector in available" :key="selector.id">
+            <label class="form-check-label" :for="selector.email">
+              <input
+                type="checkbox"
+                :id="selector.email"
+                :value="selector.email"
+                @click.prevent="selectAvailable(selector)"
+              />
+              {{ selector.email }}
+            </label>
           </li>
         </ul>
-        <!-- list of available receipient end here-->
+        <!-- List of available recipient code end here-->
       </div>
 
       <div class="selected-recipients">
         <div class="subhead">
           <h3>Selected Recipients</h3>
         </div>
-        <!-- list of selected receipients -->
+
+        <!-- List of selected recipients code -->
         <ul>
           <li v-for="(group, company) in selectedRecipients" :key="company">
             <div class="selected-group">
-              <span>{{ company }}</span>
+              <span class="company-name">{{ company }}</span>
               <ul>
-                <li v-for="(email, index) in group" :key="index">
-                  {{ email.email }}
-                  <button @click="removeRecipient(email)">Remove</button>
+                <li class="form-check" v-for="remover in group" :key="remover.id">
+                  <label class="form-check-label" :for="remover.id">
+                    <input
+                      type="checkbox"
+                      :id="remover.id"
+                      :value="remover.email"
+                      @click.prevent="removeRecipient(remover)"
+                      checked
+                    />
+                    {{ remover.email }}
+                  </label>
                 </li>
               </ul>
             </div>
           </li>
         </ul>
-        <!-- list of selected receipients end here-->
+        <!-- List of selected recipients code end here-->
       </div>
     </div>
   </div>
@@ -68,42 +84,47 @@ import json from './json/data.json'
 export default {
   data() {
     return {
-      availableRecipients: [],
-      selectedRecipients: {},
-      searchTerm: '',
-      searchResults: [],
-      available: {}
+      availableRecipients: [], // Array to store available recipients
+      selectedRecipients: {}, // Object to store selected recipients grouped by company
+      searchTerm: '', // Search term for filtering recipients
+      searchResults: [], // Results of search
+      available: {} // Object to store available recipients (filtered by search and selection)
     }
   },
-  render() {},
   mounted() {
-    // data json file is attached here
+    // Fetch data from JSON file
     this.availableRecipients = json
+    // Initialize selected recipients
     this.updateSelectedRecipients()
-    // console.log(available)
   },
 
   methods: {
+    // Update the list of selected recipients
     updateSelectedRecipients() {
       this.selectedRecipients = {}
+      // Filter available recipients to get only those which are not selected
       this.available = this.availableRecipients.filter((recipient) => !recipient.isSelected)
+      // Group selected recipients by their domain name
       this.availableRecipients.forEach((recipient) => {
         if (recipient.isSelected) {
-          const domain = recipient.email.split('@')[1]
+          const domain = recipient.email.split('@')[1] // Splitting receipient email to get domain
           if (!this.selectedRecipients[domain]) {
             this.selectedRecipients[domain] = []
           }
           this.selectedRecipients[domain].push(recipient)
         }
       })
-      console.log(this.available)
     },
-    selectAvailable(recipient) {
-      recipient.isSelected = true
+
+    // Select an available recipient
+    selectAvailable(selector) {
+      selector.isSelected = true
       this.updateSelectedRecipients()
     },
-    removeRecipient(email) {
-      email.isSelected = false
+
+    // Remove a selected recipient
+    removeRecipient(remover) {
+      remover.isSelected = false
       this.updateSelectedRecipients()
     },
 
@@ -112,11 +133,13 @@ export default {
       this.searchResults = this.available.filter((recipient) =>
         recipient.email.includes(this.searchTerm)
       )
+      // Reset search results if search term is empty
       if (this.searchTerm == '') {
         this.searchResults = ''
       }
-      // console.log(this.searchResults)
     },
+
+    // Select a recipient from search results
     selectRecipient(selected) {
       this.searchResults = ''
       this.searchTerm = ''
